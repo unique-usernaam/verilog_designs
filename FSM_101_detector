@@ -1,4 +1,5 @@
 module fsm101(ouptut reg q_out, input in,clk,rst);
+	reg [1:0] pres_state, next_state;
 	parameter s0=2'b00, s1=2'b01;
 	parameter s2=2'b10;
 	
