@@ -1,0 +1,28 @@
+module shiftN(output reg o, input[7:0]in,
+              input clk,rst, in_en);
+  parameter N=8; 
+  reg [N-1:0]q;
+//Behavioural code for PISO
+  always@(posedge clk) begin
+    if(rst)begin q<='d0; o<='d0; end
+    else if(in_en) q<=in;
+    else begin 
+            q<={q[N-2:0],q[N-1]};
+            o<=q[N-1];
+    end
+  end
+//SISO using generate
+//Variable 'in' is a single bit input rather than a vector.
+/*
+  genvar j;
+  generate for(j=0; j<N; j=j+1) begin: shift_loop
+    always@(posedge clk) begin
+      if(rst) q<='d0;
+      else begin
+        q[0]=in; 
+        q[j]<=q[j-1];
+      end
+    end
+  endgenerate
+  assign o=q[N-1];
+*/
