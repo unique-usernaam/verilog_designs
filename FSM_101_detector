@@ -10,10 +10,10 @@ module fsm101(output reg q_out, input in,clk,rst);
 	
 	always@(posedge clk) begin// Output for overlapping detection.
 		case(pres_state)
-		s0: q_out<1'b0;
-		s1: q_out<1'b0;	
-		s2: begin if(in) q_out<1'b1;
-					 else q_out<1'b0; end
+		s0: q_out<=1'b0;
+		s1: q_out<=1'b0;	
+		s2: begin if(in) q_out<=1'b1;
+					 else q_out<=1'b0; end
 	end
 	
 	always@(pres_state or in) begin// Next state assignment. 
