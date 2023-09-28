@@ -1,0 +1,35 @@
+module coffee_tea(output reg tea_done, coffee_done,
+						input coin, clk,rst, input [1:0]choice);
+	reg [1:0] pres_state,next_state;
+	parameter s0=2'b00, s1=2'b01;
+	parameter s2=2'b10, s3=2'b11;
+//Present state assignment.
+	always@(posedge clk) begin
+		if(rst) pres_state<=s0;
+		else pres_state<=next_state;
+	end
+//Output and next state assignment.
+	always@(pres_state or coin or choice) begin
+		case(pres_state)
+		s0: begin
+			tea_done<=1'b0;coffee_done<=1'b0;
+			if(coin) next_state<=s1;
+			else next_state<=s0;
+		end
+		s1: begin
+			tea_done<=1'b0; coffee_done<=1'b0;
+			if(choice==2'b10) next_state<=s2;
+			else if(choice==2'b11) next_state<=s3;
+			else next_state<=s1;
+		end
+		s2: begin 
+			tea_done<=1'b1; coffee_done<=1'b0;
+			next_state<=s0;
+		end
+		s3: begin
+			tea_done<=1'b0; coffee_done<=1'b1;
+			next_state<=s0;
+		end
+		endcase
+	end
+endmodule
