@@ -1,0 +1,32 @@
+module lifo(input r_en, w_en, clk, rst_n,
+				    input [7:0] data_in,
+				    output reg [7:0] data_out, output reg full, empty);
+	
+	parameter Depth=16, Datawidth=8;
+	reg[$clog2(Depth):0] r_ptr='d1, w_ptr='d1;
+	reg[Datawidth-1:0]lifo[Depth:1];
+	
+	always@(posedge clk)begin
+		if(!rst_n) w_ptr<='d1;
+		else if(w_en && r_en) data_out<=data_in;
+		else if(w_en && (!full)) begin
+			lifo[w_ptr]<=data_in;
+			r_ptr<=w_ptr;
+			w_ptr<=w_ptr+1;
+		end
+		else if(r_en && (!empty)) begin
+			data_out<=lifo[r_ptr];
+			lifo[r_ptr]<='d0;
+			r_ptr<=r_ptr-1;
+		end
+		full<=((w_ptr>Depth)&& w_en);
+		empty<=(r_en &&(r_ptr=='d0));
+	end
+
+	always@(full,empty) begin
+		if(empty) begin
+			data_out<=data_out; w_ptr<='d1;
+		end
+		if(full) w_ptr<='d1;
+	end
+endmodule
