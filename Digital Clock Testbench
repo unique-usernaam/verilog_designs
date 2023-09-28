@@ -1,0 +1,28 @@
+module dclk_tb;
+
+	wire [5:0]h; 
+	wire [6:0]m,s; 
+  wire alm, err; 
+	reg set, rst, clk, alm_en, alm_stp;
+  reg [5:0] ho_in; 
+	reg [6:0]min_in;
+
+	// Instantiate the Unit Under Test (UUT)
+	dclk uut(h, m, s, alm, err, set, rst, clk, alm_en, alm_stp, ho_in, min_in);
+
+	initial begin
+		// Initialize Inputs
+		clk=1'b0; set=1'b1; alm_en=1'b0; rst=1'b1;
+		alm_stp=1'b1; ho_in='d3; min_in='d0;
+		forever #10 clk=~clk;
+	end
+	
+  always begin
+		#10 set=#15 1'b0; rst=1'b0; ho_in='d5; min_in='d30;
+			 alm_en=1'b1; alm_stp=1'b0; 
+		#50 alm_en=1'b0;
+		#60 alm_stp=1'b1;
+		#60;
+	end
+      
+endmodule
