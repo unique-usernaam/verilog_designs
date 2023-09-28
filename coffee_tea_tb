@@ -1,0 +1,23 @@
+module coffee_tea_tb;
+
+	wire tea_done, coffee_done;
+	reg coin, clk,rst;
+	reg [1:0]choice;
+
+	// Instantiate the Unit Under Test (UUT)
+	coffee_tea uut(tea_done, coffee_done, coin,clk, rst,choice);
+
+	initial begin
+	// Initialize Inputs
+	  coin=1'b0; clk=1'b1; choice=2'b00; rst=1'b1;
+		forever #10 clk=~clk;
+	end
+	always begin
+		#20 coin<=1'b1; rst<=1'b0;
+		#20 coin=1'b0; 
+		#20 choice=2'b10; #20 choice=2'd0;
+		#40 coin=1'b1; #20 coin=1'b0; #20 choice=2'b11;
+		#20 coin= 1'b0; #40 choice=2'd0;
+	end
+      
+endmodule
