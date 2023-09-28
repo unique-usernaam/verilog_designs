@@ -1,0 +1,14 @@
+module freq_div(output reg div,
+					      input clk,rst);
+	parameter N=16;
+	reg [N-1:0]q;
+	always@(posedge clk) begin
+		if(rst)begin
+			div<='d0;q<='d0;
+		end
+		else begin
+			q<=q+1'b1
+			if((q%(N/2))==0) div=~div;
+		end
+	end
+endmodule
