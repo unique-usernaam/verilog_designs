@@ -26,3 +26,4 @@ module shiftN(output reg o, input[7:0]in,
   endgenerate
   assign o=q[N-1];
 */
+endmodule
